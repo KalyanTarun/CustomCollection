@@ -1,0 +1,142 @@
+import java.util.function.Predicate;
+import java.util.Comparator;
+
+class CustomSet<T>{
+	Node<T> head,last;
+	int size;
+	public boolean find(T obj){
+		for(Node<T> temp=head;temp!=null;temp=temp.next){
+			if(temp.data.equals(obj))  return true;
+		}
+		return false;
+	}
+
+	public boolean find(Predicate<T> checker){
+		for(Node<T> temp=head;temp!=null;temp=temp.next){
+			if(checker.test(temp.data))  return true;
+		}
+		return false;
+	}
+
+	public void add(T new_data) throws Exception{
+		Node<T> new_node=new Node<>(new_data);
+		if(head==null){
+			head=last=new_node;
+			size++;
+		}
+		else{
+			if(!find(new_node.data)){
+				last.next=new_node;
+				last=new_node;
+				last.next=null;
+				size++;
+			}
+			else{
+				throw new Exception("Duplicate element cannot be inserted into a set");
+			}
+		}
+	}
+   
+	public boolean remove(T obj){
+		Node<T> temp,prev=null;
+		for(temp=head;temp!=null;temp=temp.next){
+			if(temp.data.equals(obj)) break;
+			prev=temp;
+		}
+		if(temp==null) return false;
+		if(prev==null) head=head.next;
+		else prev.next=temp.next;
+		size--;
+		return true;
+	}
+
+   public boolean remove(int index){
+   	  if(index>=size || index<0) return false;
+   	  Node<T> temp=head,prev=null;
+   	  for(int i=0;i<index;i++){
+   	  	prev=temp;
+   	  	temp=temp.next;
+   	  }
+   	  if(prev==null) head=head.next;
+   	  else{
+   	  	 prev.next=temp.next;
+   	  }
+   	  size--;
+   	  return true;
+   }
+
+   public boolean remove(Predicate<T> checker){
+   	   Node<T> temp,prev=null;
+		for(temp=head;temp!=null;temp=temp.next){
+			if(checker.test(temp.data)) break;
+			prev=temp;
+		}
+		if(temp==null) return false;
+		if(prev==null) head=head.next;
+		else prev.next=temp.next;
+		size--;
+		return true;
+   }
+   
+   public void set(int index,T new_data) throws Exception{
+   	if(index>=size || index<0){
+   		throw new Exception("cannot insert into the following index");
+   	} 
+   	Node<T> new_node=new Node<>(new_data);
+   	if(!find(new_node.data)){
+   	Node<T> temp=head,prev=null;
+     for(int i=0;i<index;i++){
+     	prev=temp;
+     	temp=temp.next;
+     }
+     if(prev==null){
+     	new_node.next=head;
+     	head=new_node;
+     	size++;
+     }
+     else{
+     	new_node.next=temp;
+     	prev.next=new_node;
+     	size++;
+     }
+   }
+   else{
+   	throw new Exception("Duplicate element cannot be inserted into a set");
+   }
+}
+
+  public T get(int index){
+  	if(index>=size || index<0){
+  		System.out.println("Cannot reach to the following index");
+  	}
+  	Node<T> temp=head;
+  	for(int i=0;i<index;i++){
+  		temp=temp.next;
+  	}
+  	return temp.data;
+
+  }
+  
+ public void sort(Comparator<T> comp){
+ 	T t;
+ 	for(Node<T> i=head;i!=null;i=i.next){
+ 		for(Node<T> j=i.next;j!=null;j=j.next){
+ 			if(comp.compare(i.data,j.data)>0){
+ 			  t=i.data;
+ 			  i.data=j.data;
+ 			  j.data=t;	
+ 			}
+ 		}
+ 	}
+ }
+ public String toString(){
+ 	String s="";
+ 	s+="[ ";
+ 	for(Node<T> temp=head;temp!=null;temp=temp.next){
+ 		s+=temp.data;
+ 		s+=(temp.next!=null)?" ,":" ";
+ 	}
+ 	s+=" ]";
+ 	return s;
+ }
+}

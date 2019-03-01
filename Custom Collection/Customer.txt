@@ -1,0 +1,22 @@
+public class Customer{
+	int cid;
+	String name;
+	public Customer(){}
+	public Customer(int cid,String name){
+		this.cid=cid;
+		this.name=name;
+	}
+	int getId(){
+		return this.cid;
+	}
+	String getName(){
+		return this.name;
+	}
+	public boolean equals(Object temp){
+        Customer obj=(Customer)temp;
+		return getName().equals(obj.getName()) && (getId() == obj.getId());
+	}
+	public String toString(){
+		return "( "+this.getId()+" , "+this.getName()+" )";
+	}
+}
